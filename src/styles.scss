@@ -1,1 +1,10 @@
 /* You can add global styles to this file, and also import other style files */
+
+.clickable {
+  cursor: pointer;
+}
+
+.list-item:hover {
+  color: #1e9fcd;
+  background: #cccccc2e;
+}

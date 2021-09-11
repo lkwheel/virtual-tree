@@ -1,0 +1,15 @@
+<div *ngIf="treeNode">
+  <cdk-virtual-scroll-viewport
+        [style.height.px]="500"
+        style="width: 900px; margin-top: 10px;"
+        minBuffer="200"
+        maxBuffer="350"
+        itemSize="20">
+      <div
+        *cdkVirtualFor="let ch of flatTree; templateCacheSize: 20" class="tree">
+        <virtual-checkbox-tree-child
+          [node]="ch">
+        </virtual-checkbox-tree-child>
+      </div>
+    </cdk-virtual-scroll-viewport>
+</div>

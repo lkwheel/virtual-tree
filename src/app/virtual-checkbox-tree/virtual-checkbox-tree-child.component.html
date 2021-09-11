@@ -1,0 +1,36 @@
+<div class="tree-row list-item">
+
+    <!-- clickable indent -->
+    <div
+        [ngClass]="{'clickable' : true}"
+        style="height: 17px;"
+        [ngStyle]="{'padding-left' : (15 * levelDistance()) + 'px'}">
+    </div>
+
+    <!-- Tristate checkbox -->
+    <tristate-checkbox [value]="node.tristateSelection"
+        style="padding-right: 5px;"
+         (click)="onCheckboxClicked(node)">
+    </tristate-checkbox>
+
+    <!-- Folder icon -->
+    <div *ngIf="isFolder(node)"
+          class="folder-icon-container" style="padding-right: 5px;">
+        <div *ngIf="!node.expanded">
+
+        </div>
+        <div *ngIf="!node.expanded"
+              (click)="onToggleExpandedState(node)"
+              class="clickable">
+            <i class="fa fa-folder"></i>
+        </div>
+        <div *ngIf="node.expanded"
+              (click)="onToggleExpandedState(node)"
+              class="clickable">
+            <i class="fa fa-folder-open"></i>
+        </div>
+    </div>
+    <a class="node-label">
+      <div>{{ node.name }}</div>
+    </a>
+</div>

@@ -1,0 +1,43 @@
+.child-contents-container {
+  position: relative;
+  padding-left: 10px;
+}
+
+.h-line-level {
+  position: absolute;
+  left: -1px;
+  top: 8px;
+  background-color: #484747;
+  height: 1px;
+  align-items: center;
+  content: '';
+}
+
+.tree-row {
+  display: flex;
+  align-items: center;
+  user-select: none;
+  border: 1px solid transparent;
+  padding: 2px 0px;
+}
+
+.tree-row-selected {
+  background: #006488;
+  color: white;
+}
+
+.tree {
+  display: flex;
+  flex-direction: column;
+  width: 95%;
+}
+
+.node-label{
+  display: flex;
+  width: 100%;
+}
+
+.folder-icon-container {
+  width: 18px;
+  padding-right: 5px;
+}
