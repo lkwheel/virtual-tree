@@ -2,7 +2,8 @@
 
     <!-- clickable indent -->
     <div
-        [ngClass]="{'clickable' : true}"
+        (click)="selectRow(node)"
+        [ngClass]="{'clickable' : !isSelectedRow(node)}"
         style="height: 17px;"
         [ngStyle]="{'padding-left' : (15 * levelDistance()) + 'px'}">
     </div>
@@ -31,6 +32,22 @@
         </div>
     </div>
     <a class="node-label">
-      <div>{{ node.name }}</div>
+      <div>{{ node.label }}</div>
     </a>
+
+    <p-menu #menu
+            [popup]="true"
+            appendTo="body"
+            [model]="menuItems"
+            [style]="{width: '110px', 'font-size' : '1em'}">
+    </p-menu>
+
+    <!-- Context button -->
+    <button type="button"
+            icon="pi pi-ellipsis-v"
+            [ngClass]="{'context-button-selected' : selected}"
+            class="context-button"
+            pButton
+            (click)="menu.toggle($event)">
+    </button>
 </div>

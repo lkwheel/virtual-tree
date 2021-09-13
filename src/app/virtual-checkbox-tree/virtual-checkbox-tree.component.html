@@ -1,4 +1,4 @@
-<div *ngIf="treeNode">
+<div *ngIf="tree">
   <cdk-virtual-scroll-viewport
         [style.height.px]="500"
         style="width: 900px; margin-top: 10px;"
@@ -6,9 +6,14 @@
         maxBuffer="350"
         itemSize="20">
       <div
-        *cdkVirtualFor="let ch of flatTree; templateCacheSize: 20" class="tree">
+        *cdkVirtualFor="let ch of visibleFlatTree; templateCacheSize: 20" class="tree">
         <virtual-checkbox-tree-child
-          [node]="ch">
+          [rowSelectionEnabled]="rowSelectionEnabled"
+          [node]="ch"
+          [selectedRow]="selectedRow"
+          (selectedRowChange)="onSelectedRowChange($event)"
+          (expandAllToggle)="onExpandAllNodesChange($event)"
+          (expandedNodeChange)="onExpandedNodeChange($event)">
         </virtual-checkbox-tree-child>
       </div>
     </cdk-virtual-scroll-viewport>

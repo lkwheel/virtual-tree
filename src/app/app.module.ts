@@ -1,6 +1,9 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ScrollingModule } from '@angular/cdk/scrolling';
+import { MenuModule } from 'primeng/menu';
+import { ButtonModule } from 'primeng/button';
 
 import { AppComponent } from './app.component';
 import { VirtualCheckboxTreeComponent } from './virtual-checkbox-tree/virtual-checkbox-tree.component';
@@ -16,6 +19,9 @@ import { TristateCheckboxComponent } from './tristate-checkbox/tristate-checkbox
   ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
+    ButtonModule,
+    MenuModule,
     ScrollingModule
   ],
   providers: [],
