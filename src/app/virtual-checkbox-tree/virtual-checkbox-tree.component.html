@@ -13,7 +13,8 @@
           [selectedRow]="selectedRow"
           (selectedRowChange)="onSelectedRowChange($event)"
           (expandAllToggle)="onExpandAllNodesChange($event)"
-          (expandedNodeChange)="onExpandedNodeChange($event)">
+          (expandedNodeChange)="onExpandedNodeChange($event)"
+          (uncheckAll)="onUncheckAll()">
         </virtual-checkbox-tree-child>
       </div>
     </cdk-virtual-scroll-viewport>

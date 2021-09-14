@@ -30,6 +30,9 @@ export class VirtualCheckboxTreeChildComponent<T> implements OnInit {
   @Output()
   expandAllToggle = new EventEmitter<boolean>();
 
+  @Output()
+  uncheckAll = new EventEmitter();
+
   menuItems: MenuItem[];
 
   constructor() { }
@@ -67,12 +70,13 @@ export class VirtualCheckboxTreeChildComponent<T> implements OnInit {
 
   onCheckboxClicked(node: TreeNode<T>) {
     const state = node.tristateSelection;
+    console.log(`node ${node.label} check state ${state}`)
     if (state === TristateSelection.CHECKED || state === TristateSelection.PARTIAL) {
       node.tristateSelection = TristateSelection.UNCHECKED;
     } else {
       node.tristateSelection = TristateSelection.CHECKED;
     }
-    // this.selectedRowChange.next(node);
+    this.selectedRowChange.next(node);
   }
 
   onToggleExpandedState(node: TreeNode<T>) {
@@ -119,7 +123,7 @@ export class VirtualCheckboxTreeChildComponent<T> implements OnInit {
             label: 'Uncheck All',
             icon: 'fas fa-trash-alt',
             disabled: false,
-            command: event => console.log(`clicked`)//this.uncheckAll.emit()
+            command: event => this.uncheckAll.emit()
           }
         ]
       }

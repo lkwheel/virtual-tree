@@ -70,7 +70,6 @@ export function collapseNodes(root: TreeNode<any>, nodesToCollapse: TreeNode<any
   const rootClone = _.cloneDeep(root);
   nodesToCollapse.forEach((node: TreeNode<any>) => {
     const found = findNodeInTreeByKey(rootClone, node.key);
-    console.log(`Node to collapse ${node.label} -> foundNode ${found.label}`);
     if (isPresent(found)) {
       collapseChildren(found);
     }
@@ -78,7 +77,68 @@ export function collapseNodes(root: TreeNode<any>, nodesToCollapse: TreeNode<any
   return rootClone;
 }
 
-function findNodeInTreeByKey(node: TreeNode<any>, key: string): TreeNode<any> {
+export function unselectAllInNode(root: TreeNode<any>): TreeNode<any> {
+  let arr: TreeNode<any>[] = flatten(root);
+  if (isPresent(arr)) {
+    for (let i = 0; i < arr.length; i++) {
+      arr[i].tristateSelection = TristateSelection.UNCHECKED;
+    }
+  }
+  return root;
+}
+
+export function selectNodes(root: TreeNode<any>, nodesToSelect: TreeNode<any>[]): TreeNode<any> {
+  if (isPresent(nodesToSelect)) {
+    const rootClone = _.cloneDeep(root);
+    const parentIdList = nodesToSelect.map(n => {
+      if (isPresent(n.parent)) {
+        return n.parent.key;
+      }
+    });
+    console.log(`${rootClone.label} is root`)
+    nodesToSelect.forEach((node: TreeNode<any>) => {
+      const found = findNodeInTreeByKey(rootClone, node.key);
+      found.tristateSelection = TristateSelection.CHECKED;
+      const parentToSelection = parentIdList.find(c => found.key === c);
+      if (isPresent(parentToSelection)) {
+        found.tristateSelection = TristateSelection.PARTIAL;
+      }
+    });
+    updateParentPartials(nodesToSelect, rootClone);
+    return rootClone;
+  }
+  console.log('No selected nodes')
+  return root;
+}
+
+function updateParentPartials(nodesSelected: TreeNode<any>[], sourceNode: TreeNode<any>): void {
+  nodesSelected.forEach(node => {
+    console.log(`Updating parents of node ${node.key}`)
+    const found = findNodeInTreeByKey(sourceNode, node.key);
+    let parent = found.parent;
+    while (isPresent(parent) && (getTreeNodeLevel(parent) !== 0)) {
+      const checkedChildren = parent.children.filter(n => n.tristateSelection === TristateSelection.CHECKED);
+      console.log(`node ${parent.label} has ${checkedChildren.length} checked children and ${parent.children.length} total children`)
+      console.log(checkedChildren)
+      if (parent.children.length !== checkedChildren.length) {
+        parent.tristateSelection = TristateSelection.PARTIAL;
+      } else {
+        parent.tristateSelection = TristateSelection.CHECKED;
+      }
+      parent = parent.parent;
+    }
+  });
+}
+
+function getCheckedNodes(node: TreeNode<any>): TreeNode<any>[] {
+  const flattenedRootNode = flatten(node);
+  const checkedNodes = flattenedRootNode.filter(n => n.tristateSelection === TristateSelection.CHECKED);
+  console.log(`Checked node count: ${checkedNodes.length}`)
+  console.log(checkedNodes);
+  return checkedNodes;
+}
+
+export function findNodeInTreeByKey(node: TreeNode<any>, key: string): TreeNode<any> {
   let arr: TreeNode<any>[] = flatten(node);
   if (isPresent(arr)) {
     const foundIndex = arr.findIndex(n => key === n.key);
@@ -89,7 +149,7 @@ function findNodeInTreeByKey(node: TreeNode<any>, key: string): TreeNode<any> {
   return null;
 }
 
-function flatten(node: TreeNode<any>): TreeNode<any>[] {
+export function flatten(node: TreeNode<any>): TreeNode<any>[] {
   let res: TreeNode<any>[] = [];
   if (isPresent(node.children)) {
     for (const c of node.children) {
@@ -100,12 +160,11 @@ function flatten(node: TreeNode<any>): TreeNode<any>[] {
   return res;
 }
 
-export function collapseChildren(node: TreeNode<any>, isRoot: boolean = false): any {
+function collapseChildren(node: TreeNode<any>, isRoot: boolean = false): TreeNode<any> {
   let expand = false;
   if (isRoot) {
     expand = true;
   }
-  console.log(`Setting node ${node.label} to expand = ${expand}`)
   node.expanded = expand;
   if (isPresent(node.children)) {
     const childNodes = _.cloneDeep(node.children);
@@ -127,7 +186,7 @@ export function collapseChildren(node: TreeNode<any>, isRoot: boolean = false): 
  * @param change
  * @returns
  */
-export function flatTreeRecursive(root: TreeNode<any>, isRoot: boolean, change: ExpandStateChange): TreeNode<any>[] {
+export function changeExpansionStateRecursive(root: TreeNode<any>, isRoot: boolean, change: ExpandStateChange): TreeNode<any>[] {
   const rootClone = _.cloneDeep(root);
   let res = [];
   if (isRoot) {
@@ -146,7 +205,7 @@ export function flatTreeRecursive(root: TreeNode<any>, isRoot: boolean, change: 
         default:
       }
       res.push(c);
-      res = res.concat(flatTreeRecursive(c, false, change));
+      res = res.concat(changeExpansionStateRecursive(c, false, change));
     }
   }
   return res;
