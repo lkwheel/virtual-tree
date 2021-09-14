@@ -102,4 +102,12 @@ export class AppComponent implements OnInit, OnChanges {
       // this.selectedRow = this.findCheckBoxNodeById(this.layerTree, this.selectedRow.key);
     }
   }
+
+  onSelectedRowChange(rows: TreeNode<string>[]) {
+    console.log(`the parent component has been informed of a change to ${rows.length} rows`)
+  }
+
+  onCollapsedRowChange(rows: TreeNode<string>[]) {
+    console.log(`the parent component has been informed of a change to ${rows.length} rows`)
+  }
 }

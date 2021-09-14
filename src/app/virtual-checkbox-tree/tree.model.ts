@@ -95,7 +95,6 @@ export function selectNodes(root: TreeNode<any>, nodesToSelect: TreeNode<any>[])
         return n.parent.key;
       }
     });
-    console.log(`${rootClone.label} is root`)
     nodesToSelect.forEach((node: TreeNode<any>) => {
       const found = findNodeInTreeByKey(rootClone, node.key);
       found.tristateSelection = TristateSelection.CHECKED;
@@ -107,19 +106,15 @@ export function selectNodes(root: TreeNode<any>, nodesToSelect: TreeNode<any>[])
     updateParentPartials(nodesToSelect, rootClone);
     return rootClone;
   }
-  console.log('No selected nodes')
   return root;
 }
 
 function updateParentPartials(nodesSelected: TreeNode<any>[], sourceNode: TreeNode<any>): void {
   nodesSelected.forEach(node => {
-    console.log(`Updating parents of node ${node.key}`)
     const found = findNodeInTreeByKey(sourceNode, node.key);
     let parent = found.parent;
     while (isPresent(parent) && (getTreeNodeLevel(parent) !== 0)) {
       const checkedChildren = parent.children.filter(n => n.tristateSelection === TristateSelection.CHECKED);
-      console.log(`node ${parent.label} has ${checkedChildren.length} checked children and ${parent.children.length} total children`)
-      console.log(checkedChildren)
       if (parent.children.length !== checkedChildren.length) {
         parent.tristateSelection = TristateSelection.PARTIAL;
       } else {
@@ -130,11 +125,9 @@ function updateParentPartials(nodesSelected: TreeNode<any>[], sourceNode: TreeNo
   });
 }
 
-function getCheckedNodes(node: TreeNode<any>): TreeNode<any>[] {
+export function getCheckedNodes(node: TreeNode<any>): TreeNode<any>[] {
   const flattenedRootNode = flatten(node);
   const checkedNodes = flattenedRootNode.filter(n => n.tristateSelection === TristateSelection.CHECKED);
-  console.log(`Checked node count: ${checkedNodes.length}`)
-  console.log(checkedNodes);
   return checkedNodes;
 }
 

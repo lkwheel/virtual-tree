@@ -70,7 +70,6 @@ export class VirtualCheckboxTreeChildComponent<T> implements OnInit {
 
   onCheckboxClicked(node: TreeNode<T>) {
     const state = node.tristateSelection;
-    console.log(`node ${node.label} check state ${state}`)
     if (state === TristateSelection.CHECKED || state === TristateSelection.PARTIAL) {
       node.tristateSelection = TristateSelection.UNCHECKED;
     } else {
@@ -92,11 +91,11 @@ export class VirtualCheckboxTreeChildComponent<T> implements OnInit {
         label: 'View',
         items: [
           {
-            id: 'zoom-to-region',
-            label: `Zoom-To`,
+            id: 'future-todo',
+            label: `To Do`,
             icon: 'pi pi-fw pi-search',
             disabled: false,
-            command: event => console.log(`clicked`)//this.flyToRegion.emit(this.node.data)
+            command: event => {}
           },
         ]
       },
@@ -109,14 +108,14 @@ export class VirtualCheckboxTreeChildComponent<T> implements OnInit {
             label: 'Expand All',
             icon: 'fas fa-trash-alt',
             disabled: false,
-            command: event => this.expandAllToggle.emit(true)//this.uncheckAll.emit()
+            command: event => this.expandAllToggle.emit(true)
           },
           {
             id: 'unexpand-all',
             label: 'Unexpand All',
             icon: 'fas fa-trash-alt',
             disabled: false,
-            command: event => this.expandAllToggle.emit(false)//this.uncheckAll.emit()
+            command: event => this.expandAllToggle.emit(false)
           },
           {
             id: 'uncheck',

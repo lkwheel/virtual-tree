@@ -1,6 +1,8 @@
 <div class="container">
   <virtual-checkbox-tree
     [tree]="tree"
-    [selectedRow]="selectedRow">
+    [selectedRow]="selectedRow"
+    (selectedNodesChange)="onSelectedRowChange($event)"
+    (collapsedNodeChange)="onCollapsedRowChange($event)">
   </virtual-checkbox-tree>
 </div>

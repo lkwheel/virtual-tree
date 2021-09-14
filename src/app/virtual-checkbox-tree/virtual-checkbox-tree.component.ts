@@ -28,7 +28,7 @@ export class VirtualCheckboxTreeComponent<T> implements OnInit, OnChanges {
   @Input()
   selectedRow: TreeNode<T>;
   @Output()
-  selectedRowChange = new EventEmitter<TreeNode<T>>();
+  selectedNodesChange = new EventEmitter<TreeNode<T>[]>();
 
   @Input()
   selectedNodes: TreeNode<T>[];
@@ -36,7 +36,7 @@ export class VirtualCheckboxTreeComponent<T> implements OnInit, OnChanges {
   @Input()
   collapsedNodes: TreeNode<T>[];
   @Output()
-  expandedNodesChange = new EventEmitter<TreeNode<T>[]>();
+  collapsedNodeChange = new EventEmitter<TreeNode<T>[]>();
 
 
   flatTree: TreeNode<T>[];
@@ -101,6 +101,7 @@ export class VirtualCheckboxTreeComponent<T> implements OnInit, OnChanges {
   onUncheckAll() {
     this.selectedNodes = [];
     this.filterTreeNodes(this.tree.root, this.collapsedNodes, this.selectedNodes);
+    this.selectedNodesChange.emit(this.selectedNodes);
   }
 
   onExpandAllNodesChange(expand: boolean) {
@@ -109,6 +110,7 @@ export class VirtualCheckboxTreeComponent<T> implements OnInit, OnChanges {
       expansionState = ExpandStateChange.EXPAND
     }
     this.filterTreeNodes(this.tree.root, this.collapsedNodes, this.selectedNodes, expansionState);
+    this.collapsedNodeChange.emit(this.collapsedNodes);
   }
 
   onExpandedNodeChange(node: TreeNode<T>) {
@@ -122,6 +124,7 @@ export class VirtualCheckboxTreeComponent<T> implements OnInit, OnChanges {
       this.collapsedNodes = <TreeNode<T>[]>addToRemoveOrUpdateNodeInList(node, this.collapsedNodes, true);
     }
     this.filterTreeNodes(this.tree.root, this.collapsedNodes, this.selectedNodes);
+    this.collapsedNodeChange.emit(this.collapsedNodes);
   }
 
   onSelectedRowChange(node: TreeNode<T>): void {
@@ -156,7 +159,7 @@ export class VirtualCheckboxTreeComponent<T> implements OnInit, OnChanges {
       this.selectedNodes = [];
     }
     this.filterTreeNodes(this.tree.root, this.collapsedNodes, this.selectedNodes);
-    this.selectedRowChange.next(node);
+    this.selectedNodesChange.emit(this.selectedNodes);
   }
 
 }
