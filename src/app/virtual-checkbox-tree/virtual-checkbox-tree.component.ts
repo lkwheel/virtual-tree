@@ -127,7 +127,7 @@ export class VirtualCheckboxTreeComponent<T> implements OnInit, OnChanges {
     this.collapsedNodeChange.emit(this.collapsedNodes);
   }
 
-  onSelectedRowChange(node: TreeNode<T>): void {
+  onSelectedNodeChange(node: TreeNode<T>): void {
     if (!isPresent(this.selectedNodes)) {
       this.selectedNodes = [];
     }
@@ -152,6 +152,18 @@ export class VirtualCheckboxTreeComponent<T> implements OnInit, OnChanges {
         });
       } else {
         this.selectedNodes = <TreeNode<T>[]>addToRemoveOrUpdateNodeInList(node, this.selectedNodes, true);
+      }
+      // Check parents to see if they should still be a selected node
+      let parent = toggledNode.parent;
+      while (isPresent(parent) && (getTreeNodeLevel(parent) !== 0)) {
+        const checkedChildren = parent.children.filter(n => n.tristateSelection === TristateSelection.UNCHECKED);
+        if (parent.children.length !== checkedChildren.length) {
+          parent.tristateSelection = TristateSelection.PARTIAL;
+        } else {
+          parent.tristateSelection = TristateSelection.UNCHECKED;
+          this.selectedNodes = <TreeNode<T>[]>addToRemoveOrUpdateNodeInList(parent, this.selectedNodes, true);
+        }
+        parent = parent.parent;
       }
     }
     if (this.selectedNodes.length === 1 &&

@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { MenuItem } from 'primeng/api';
+import { MenuItem, PrimeNGConfig } from 'primeng/api';
 import { TristateSelection } from '../tristate-checkbox/tristate.enum';
 import { getTreeNodeLevel, isTreeNodeLeaf, TreeNode } from './tree.model';
 
@@ -35,9 +35,10 @@ export class VirtualCheckboxTreeChildComponent<T> implements OnInit {
 
   menuItems: MenuItem[];
 
-  constructor() { }
+  constructor(private primengConfig: PrimeNGConfig) { }
 
   ngOnInit(): void {
+    this.primengConfig.ripple = true;
     this.menuItems = this.initMenu();
   }
 
@@ -104,23 +105,23 @@ export class VirtualCheckboxTreeChildComponent<T> implements OnInit {
         label: 'General',
         items: [
           {
-            id: 'expand-all',
-            label: 'Expand All',
-            icon: 'fas fa-trash-alt',
-            disabled: false,
-            command: event => this.expandAllToggle.emit(true)
-          },
-          {
-            id: 'unexpand-all',
-            label: 'Unexpand All',
-            icon: 'fas fa-trash-alt',
+            id: 'collapse-all',
+            label: 'Collapse All',
+            icon: 'fa fa-folder',
             disabled: false,
             command: event => this.expandAllToggle.emit(false)
           },
           {
+            id: 'expand-all',
+            label: 'Expand All',
+            icon: 'fa fa-folder-open',
+            disabled: false,
+            command: event => this.expandAllToggle.emit(true)
+          },
+          {
             id: 'uncheck',
             label: 'Uncheck All',
-            icon: 'fas fa-trash-alt',
+            icon: 'fas fa-square',
             disabled: false,
             command: event => this.uncheckAll.emit()
           }

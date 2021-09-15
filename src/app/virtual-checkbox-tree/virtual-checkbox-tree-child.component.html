@@ -39,15 +39,15 @@
             [popup]="true"
             appendTo="body"
             [model]="menuItems"
-            [style]="{width: '150px', 'font-size' : '1em'}">
+            [style]="{width: '160px', 'font-size' : '1em'}">
     </p-menu>
 
     <!-- Context button -->
-    <button type="button"
+    <button pButton pRipple
+            type="button"
             icon="pi pi-ellipsis-v"
             [ngClass]="{'context-button-selected' : selected}"
             class="context-button"
-            pButton
             (click)="menu.toggle($event)">
     </button>
 </div>
