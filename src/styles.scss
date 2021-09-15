@@ -8,3 +8,19 @@
   color: #1e9fcd;
   background: #cccccc2e;
 }
+
+
+
+/**
+ * Checkbox-tree
+ */
+#work-pane .tree-row-selected {
+  background: #006488;
+  color: white;
+}
+#work-pane .tree-row-selected:hover .node-label {
+  color: white;
+}
+#work-pane .tree-row-selected:hover {
+  background: #21a2d0;
+}

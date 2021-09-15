@@ -91,23 +91,11 @@ export class AppComponent implements OnInit, OnChanges {
     this.expandedNodes = _expandedNodes;
   }
 
-  /**
-   * Check whether the selected row exists in the tree, otherwise deselect the row.
-   *
-   * @private
-   * @memberof LayerManagerComponent
-   */
-  private updateSelectedRow() {
-    if (this.selectedRow) {
-      // this.selectedRow = this.findCheckBoxNodeById(this.layerTree, this.selectedRow.key);
-    }
+  onSelectedNodeChange(rows: TreeNode<string>[]) {
+    console.log(`the parent component has been informed of a change: there are now ${rows.length} selected rows`)
   }
 
-  onSelectedRowChange(rows: TreeNode<string>[]) {
-    console.log(`the parent component has been informed of a change to ${rows.length} rows`)
-  }
-
-  onCollapsedRowChange(rows: TreeNode<string>[]) {
-    console.log(`the parent component has been informed of a change to ${rows.length} rows`)
+  onCollapsedNodeChange(rows: TreeNode<string>[]) {
+    console.log(`the parent component has been informed of a change: there are now ${rows.length} collapsed rows`)
   }
 }
